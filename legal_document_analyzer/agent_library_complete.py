@@ -9,9 +9,19 @@ Total de agentes: 30
 - Operational & Specialists: 10
 """
 
-from agent_library import C_LEVEL_AGENTS, MANAGEMENT_AGENTS
-from agent_library_extended import EXTENDED_C_LEVEL, TACTICAL_MANAGERS
-from agent_library_operational import OPERATIONAL_AGENTS
+# Importa tudo do agent_library consolidado
+from agent_library import (
+    ALL_AGENTS,
+    get_all_agents as _get_all_agents,
+    get_agents_by_category as _get_agents_by_category,
+    get_agent_by_id as _get_agent_by_id,
+    search_agents as _search_agents,
+    get_statistics as _get_statistics,
+    export_agents_for_database as _export_agents_for_database,
+    get_agents_by_area as _get_agents_by_area,
+    suggest_team_for_task as _suggest_team_for_task,
+    print_all_agents as _print_all_agents
+)
 
 
 # ============================================

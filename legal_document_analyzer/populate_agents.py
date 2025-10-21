@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Dict
 
 # Importa a biblioteca completa de agentes
-from agent_library_complete import get_all_agents, get_agents_by_category, get_statistics
+from agent_library import get_all_agents, get_agents_by_category, get_statistics
 
 
 def populate_agents_database(db_path: str = None, clear_existing: bool = False):
