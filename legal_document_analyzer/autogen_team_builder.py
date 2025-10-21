@@ -950,6 +950,52 @@ def render_agent_management():
     with tab_templates:
         st.markdown("### 📝 Templates de Agentes")
 
+        # Biblioteca Completa
+        st.markdown("#### 📚 Biblioteca Empresarial Completa")
+        st.info("**30 agentes profissionais** cobrindo 100% das operações: C-Level (11) + Gerência (9) + Operacional (10)")
+
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            st.markdown("""
+            **Inclusos:**
+            - **C-Level**: CEO, CFO, CTO, CISO, DPO, CMO, COO, CHRO, CDO, Legal, CCO, CRO
+            - **Gerência**: Riscos, TI, Projetos, Qualidade, Produto, Vendas, CS, Financeiro
+            - **Operacional**: Supply Chain, Compras, Facilities, BI, Inovação, Relações Institucionais, Auditoria, ESG, Processos, Atendimento
+            """)
+
+        with col2:
+            if st.button("📥 Carregar Biblioteca Completa", type="primary", use_container_width=True):
+                try:
+                    # Import the library loading function
+                    from populate_agents import populate_agents_database
+
+                    # Populate with progress
+                    with st.spinner("Carregando biblioteca de agentes..."):
+                        stats = populate_agents_database(
+                            db_path=str(st.session_state.config.data_dir / "agents.db"),
+                            clear_existing=False  # Não remove existentes
+                        )
+
+                    st.success(f"""✅ Biblioteca carregada com sucesso!
+
+**Estatísticas:**
+- ✅ Adicionados: {stats['added']}
+- ⏭️ Já existiam: {stats['skipped']}
+- ❌ Erros: {stats['errors']}
+- 📊 Total na biblioteca: {stats['total']}
+                    """)
+                    st.rerun()
+
+                except ImportError as e:
+                    st.error(f"❌ Erro ao importar biblioteca: {str(e)}\n\nCertifique-se de que os arquivos da biblioteca estão no diretório.")
+                except Exception as e:
+                    st.error(f"❌ Erro ao carregar biblioteca: {str(e)}")
+
+        st.markdown("---")
+
+        # Templates básicos individuais
+        st.markdown("#### 🎯 Templates Básicos Individuais")
+
         templates = {
             "💰 CFO - Chief Financial Officer": {
                 "role": "Diretor Financeiro",
