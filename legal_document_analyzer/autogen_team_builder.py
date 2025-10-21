@@ -2785,7 +2785,7 @@ class KnowledgeManager:
         chunk_size: int = 1000,
         chunk_overlap: int = 200
     ) -> Optional[Chroma]:
-        """Cria vector store com ChromaDB"""
+        """Cria vector store com ChromaDB processando em batches"""
 
         # Busca documentos
         docs = self.list_documents(agent_id)
@@ -2798,10 +2798,11 @@ class KnowledgeManager:
         else:
             collection_name = "global_knowledge"
 
-        # Cria embeddings
+        # Cria embeddings com configuração de batch
         embeddings = OpenAIEmbeddings(
             openai_api_key=api_key,
-            model="text-embedding-3-small"
+            model="text-embedding-3-small",
+            chunk_size=100  # Limita batch size interno da OpenAI
         )
 
         # Seleciona splitter
@@ -2843,13 +2844,31 @@ class KnowledgeManager:
         # Split
         splits = splitter.split_documents(langchain_docs)
 
-        # Cria vector store
-        vector_store = Chroma.from_documents(
-            documents=splits,
-            embedding=embeddings,
-            collection_name=collection_name,
-            persist_directory=str(self.chroma_dir)
-        )
+        # Processa em batches para evitar exceder limite de tokens da OpenAI
+        # Limite: 300k tokens por request. Com chunks de ~1000 chars, usamos batches de 100 chunks
+        BATCH_SIZE = 100
+
+        vector_store = None
+        total_batches = (len(splits) + BATCH_SIZE - 1) // BATCH_SIZE
+
+        for i in range(0, len(splits), BATCH_SIZE):
+            batch = splits[i:i + BATCH_SIZE]
+            batch_num = (i // BATCH_SIZE) + 1
+
+            # Feedback de progresso
+            print(f"Processando batch {batch_num}/{total_batches} ({len(batch)} chunks)...")
+
+            if vector_store is None:
+                # Cria vector store com primeiro batch
+                vector_store = Chroma.from_documents(
+                    documents=batch,
+                    embedding=embeddings,
+                    collection_name=collection_name,
+                    persist_directory=str(self.chroma_dir)
+                )
+            else:
+                # Adiciona batch subsequente ao vector store existente
+                vector_store.add_documents(documents=batch)
 
         return vector_store
 
@@ -3598,8 +3617,17 @@ def execute_autogen_workflow(
     # Prepara vector stores se RAG
     vector_stores = {}
     if enable_rag:
-        with st.spinner("Preparando RAG..."):
-            for agent_id in st.session_state.selected_agent_ids:
+        total_agents = len(st.session_state.selected_agent_ids) + 1  # +1 para global
+        progress_bar = st.progress(0)
+        status_text = st.empty()
+
+        current = 0
+
+        # RAG por agente
+        for agent_id in st.session_state.selected_agent_ids:
+            status_text.text(f"Preparando RAG para agente {current + 1}/{total_agents}...")
+
+            try:
                 vs = st.session_state.knowledge_manager.create_vector_store(
                     agent_id=agent_id,
                     api_key=api_key,
@@ -3607,8 +3635,16 @@ def execute_autogen_workflow(
                 )
                 if vs:
                     vector_stores[agent_id] = vs
+            except Exception as e:
+                st.warning(f"Erro ao criar RAG para agente: {str(e)}")
 
-            # Global knowledge
+            current += 1
+            progress_bar.progress(current / total_agents)
+
+        # Global knowledge
+        status_text.text(f"Preparando RAG global ({total_agents}/{total_agents})...")
+
+        try:
             vs_global = st.session_state.knowledge_manager.create_vector_store(
                 agent_id=None,
                 api_key=api_key,
@@ -3618,6 +3654,17 @@ def execute_autogen_workflow(
                 for agent_id in st.session_state.selected_agent_ids:
                     if agent_id not in vector_stores:
                         vector_stores[agent_id] = vs_global
+        except Exception as e:
+            st.warning(f"Erro ao criar RAG global: {str(e)}")
+
+        progress_bar.progress(1.0)
+        status_text.text("RAG preparado com sucesso!")
+
+        # Limpa após 1 segundo
+        import time
+        time.sleep(1)
+        progress_bar.empty()
+        status_text.empty()
 
     # Prepara agentes
     agent_configs = []
