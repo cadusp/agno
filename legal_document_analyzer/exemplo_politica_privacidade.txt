@@ -1,0 +1,86 @@
+POLÍTICA DE PRIVACIDADE E PROTEÇÃO DE DADOS
+
+Última atualização: 01 de janeiro de 2025
+
+1. INTRODUÇÃO
+
+Esta Política de Privacidade descreve como a Empresa XYZ Ltda. ("nós", "nosso" ou "Empresa") coleta, usa, armazena e protege as informações pessoais de nossos clientes e usuários de nossos serviços online.
+
+2. INFORMAÇÕES QUE COLETAMOS
+
+2.1. Informações fornecidas pelo usuário:
+- Nome completo
+- Endereço de e-mail
+- Número de telefone
+- CPF/CNPJ
+- Endereço residencial ou comercial
+
+2.2. Informações coletadas automaticamente:
+- Endereço IP
+- Tipo de navegador
+- Páginas visitadas
+- Tempo de navegação
+- Cookies e tecnologias similares
+
+3. COMO USAMOS SUAS INFORMAÇÕES
+
+3.1. Utilizamos suas informações pessoais para:
+- Fornecer e melhorar nossos serviços
+- Processar transações
+- Enviar comunicações relacionadas aos serviços
+- Personalizar sua experiência
+- Realizar análises e pesquisas
+
+3.2. Marketing e comunicações:
+- Enviar newsletters e ofertas promocionais
+- Informar sobre novos produtos e serviços
+
+4. COMPARTILHAMENTO DE INFORMAÇÕES
+
+4.1. Podemos compartilhar suas informações com:
+- Prestadores de serviços terceirizados
+- Parceiros comerciais
+- Autoridades legais quando exigido por lei
+
+4.2. Não vendemos suas informações pessoais a terceiros.
+
+5. SEGURANÇA
+
+5.1. Implementamos medidas de segurança técnicas e administrativas para proteger suas informações.
+
+5.2. Utilizamos criptografia SSL para transmissão de dados sensíveis.
+
+6. SEUS DIREITOS
+
+Você tem o direito de:
+- Acessar suas informações pessoais
+- Corrigir informações incorretas
+- Solicitar a exclusão de seus dados
+- Revogar consentimento
+- Portabilidade de dados
+
+7. COOKIES
+
+7.1. Utilizamos cookies para melhorar a experiência do usuário.
+
+7.2. Você pode configurar seu navegador para recusar cookies, mas isso pode afetar a funcionalidade do site.
+
+8. RETENÇÃO DE DADOS
+
+Mantemos suas informações pelo tempo necessário para cumprir os propósitos descritos nesta política ou conforme exigido por lei.
+
+9. ALTERAÇÕES NESTA POLÍTICA
+
+Podemos atualizar esta política periodicamente. A data da última atualização será sempre indicada no topo deste documento.
+
+10. CONTATO
+
+Para questões sobre esta política ou sobre seus dados pessoais, entre em contato:
+
+E-mail: privacidade@empresaxyz.com.br
+Telefone: (11) 1234-5678
+Endereço: Rua das Flores, 123, São Paulo - SP
+
+11. DISPOSIÇÕES GERAIS
+
+Esta política é regida pelas leis brasileiras, especialmente pela Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018).
