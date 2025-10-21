@@ -40,25 +40,62 @@ from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
 from autogen.agentchat.contrib.retrieve_assistant_agent import RetrieveAssistantAgent
 from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 
-# LangChain imports para RAG
-from langchain.text_splitter import (
-    RecursiveCharacterTextSplitter,
-    CharacterTextSplitter,
-    MarkdownTextSplitter,
-)
-from langchain_community.document_loaders import (
-    TextLoader,
-    PDFMinerLoader,
-    UnstructuredMarkdownLoader,
-    Docx2txtLoader,
-    CSVLoader,
-)
-from langchain_community.vectorstores import Chroma, FAISS
-from langchain_openai import OpenAIEmbeddings
-from langchain.schema import Document as LangChainDocument
+# LangChain imports para RAG (versão atualizada)
+try:
+    # Nova estrutura LangChain v0.1+
+    from langchain_text_splitters import (
+        RecursiveCharacterTextSplitter,
+        CharacterTextSplitter,
+        MarkdownTextSplitter,
+    )
+except ImportError:
+    # Fallback para versão antiga
+    from langchain.text_splitter import (
+        RecursiveCharacterTextSplitter,
+        CharacterTextSplitter,
+        MarkdownTextSplitter,
+    )
+
+try:
+    from langchain_community.document_loaders import (
+        TextLoader,
+        UnstructuredMarkdownLoader,
+        CSVLoader,
+    )
+    from langchain_community.document_loaders import PyPDFLoader
+except ImportError:
+    # Fallback
+    from langchain.document_loaders import (
+        TextLoader,
+        UnstructuredMarkdownLoader,
+        CSVLoader,
+        PyPDFLoader,
+    )
+
+try:
+    from langchain_community.vectorstores import Chroma
+except ImportError:
+    from langchain.vectorstores import Chroma
+
+try:
+    from langchain_openai import OpenAIEmbeddings
+except ImportError:
+    from langchain.embeddings import OpenAIEmbeddings
+
+try:
+    from langchain_core.documents import Document as LangChainDocument
+except ImportError:
+    from langchain.schema import Document as LangChainDocument
 
 # ChromaDB
 import chromadb
+
+# Para DOCX - pip install docx2txt
+try:
+    import docx2txt
+    DOCX_AVAILABLE = True
+except ImportError:
+    DOCX_AVAILABLE = False
 
 
 # ============================================================================
